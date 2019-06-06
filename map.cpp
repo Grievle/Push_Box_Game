@@ -14,9 +14,10 @@ void print_level(int level);
 
 int main()
 {
+	WINDOW *level_win;
 	WINDOW *map_loc;
 	int map_num[63];	 
-	get_data(map_num);
+	get_data(level_win, map_num);
 	
 	initscr();
 	start_color();
@@ -45,29 +46,29 @@ int main()
 	return 0;
 }
 
-void print_level(int level)
+void print_level(WINDOW* win1,int level)
 {
-	WINDOW *level_win;
+	
 	char a = char(level+48);
 	const char* tmp = &a;
 	init_pair(2, COLOR_RED, COLOR_WHITE);
-	level_win = newwin(10,10,1,1);
-	wbkgd(level_win, COLOR_PAIR(2));
-	wattron(level_win, COLOR_PAIR(2));
-	wborder(level_win, '*','*','*','*','*','*','*','*');
-	mvwprintw(level_win, 1, 1, tmp);
+	win1 = newwin(10,10,1,1);
+	wbkgd(win1, COLOR_PAIR(2));
+	wattron(win1, COLOR_PAIR(2));
+	wborder(win1, '*','*','*','*','*','*','*','*');
+	mvwprintw(win1, 1, 1, tmp);
 
-	wrefresh(level_win);
+	wrefresh(win1);
 	getch();
 }
 
-void get_data(int map_num[])
+void get_data(WINDOW *win1, int map_num[])
 {
 	static int level = 0;
 	level++;		//레벨에 따른 input(숫자).txt 불러오기
 	string tmp;
 	tmp += char(level+48);
-	print_level(level);
+	print_level(win1, level);
 	string filePath = "input"+tmp+".txt";		//파일 이름
 	ifstream ifs;
 	ifs.open(filePath);
